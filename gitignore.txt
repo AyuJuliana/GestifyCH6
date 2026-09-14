@@ -1,0 +1,54 @@
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# --- Xcode user-specific (NEVER commit these) ---
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad/
+*.xcscmblueprint
+*.xccheckout
+DerivedData/
+build/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+Config.xcconfig
+
+# --- Swift Package Manager ---
+.build/
+.swiftpm/
+Package.resolved
+Packages/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# --- Per-developer signing overrides (NEVER commit) ---
+# Bundle ID and team ID live here so each dev can run on their own iPhone
+# without breaking everyone else.
+Local.xcconfig
+
+# --- CocoaPods (we are not using it, but just in case) ---
+Pods/
+
+# --- Carthage ---
+Carthage/Build/
+
+# --- fastlane ---
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# --- Misc ---
+*.log
+*.swp
+.idea/
+.vscode/
+Config.xcconfig
+CustomJewelryDesigner/Config.xcconfig
