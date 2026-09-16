@@ -55,6 +55,18 @@ struct ContentView: View {
         CameraPreviewView(session: viewModel.camera.session)
             .frame(height: 380)
             .clipShape(RoundedRectangle(cornerRadius: Theme.cornerRadius))
+            .overlay(alignment: .topTrailing) {
+                Button {
+                    viewModel.switchCamera()
+                } label: {
+                    Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .padding(10)
+                        .background(.ultraThinMaterial, in: Circle())
+                }
+                .padding(12)
+            }
             .overlay(
                 RoundedRectangle(cornerRadius: Theme.cornerRadius)
                     .strokeBorder(

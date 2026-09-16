@@ -13,6 +13,7 @@ protocol MusicControlling: AnyObject {
     var isAuthorized: Bool { get }
     var nowPlayingTitle: String { get }
     var nowPlayingArtist: String { get }
+    var lastError: String? { get set } 
 
     func requestAuthorization() async
     func play()
@@ -26,6 +27,7 @@ final class MusicController: ObservableObject, MusicControlling {
     @Published var isAuthorized = false
     @Published var nowPlayingTitle: String = "Nothing playing"
     @Published var nowPlayingArtist: String = ""
+    @Published var lastError: String?
 
     private let player = SystemMusicPlayer.shared
     private var refreshTimer: Timer?
@@ -54,6 +56,7 @@ final class MusicController: ObservableObject, MusicControlling {
                 refreshNowPlaying()
             } catch {
                 print("Play error: \(error)")
+                lastError = "Play failed: \(error.localizedDescription)"   
             }
         }
     }
@@ -66,9 +69,10 @@ final class MusicController: ObservableObject, MusicControlling {
         Task {
             do {
                 try await player.skipToNextEntry()
-//                refreshNowPlaying()
+                refreshNowPlaying()
             } catch {
                 print("Next error: \(error)")
+                lastError = "Next failed: \(error.localizedDescription)"
             }
         }
     }
@@ -80,6 +84,7 @@ final class MusicController: ObservableObject, MusicControlling {
                 refreshNowPlaying()
             } catch {
                 print("Previous error: \(error)")
+                lastError = "Previous failed: \(error.localizedDescription)"
             }
         }
     }

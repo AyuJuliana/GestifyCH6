@@ -22,14 +22,9 @@ struct GestureTipStyle: TipViewStyle {
                 configuration.message?.font(.caption).foregroundStyle(.white.opacity(0.7))
             }
             Spacer()
-//            Button {
-//                configuration.tip.invalidate(reason: .tipClosed)
-//            } label: {
-//                Image(systemName: "xmark").font(.caption.weight(.bold)).foregroundStyle(.white.opacity(0.4))
-//            }
+                .padding(14)
+                .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 16))
+                .overlay(RoundedRectangle(cornerRadius: 16).stroke(.white.opacity(0.08), lineWidth: 1))
         }
-        .padding(14)
-        .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 16))
-        .overlay(RoundedRectangle(cornerRadius: 16).stroke(.white.opacity(0.08), lineWidth: 1))
     }
 }

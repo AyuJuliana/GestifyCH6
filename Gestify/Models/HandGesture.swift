@@ -9,8 +9,8 @@ import Foundation
 enum HandGesture: String, CaseIterable {
     case play       // open palm, 5 fingers
     case pause      // fist, 0 fingers
-    case next       // two fingers
-    case previous   // one finger
+    case next       // rock fingers
+    case previous   // call 
     case none
 
     var displayName: String {
@@ -27,9 +27,9 @@ enum HandGesture: String, CaseIterable {
         switch self {
         case .play: return "✋"
         case .pause: return "✊"
-        case .next: return "✌️"
-        case .previous: return "☝️"
-        case .none: return "🤚"
+        case .next: return "🤘"
+        case .previous: return "🤙"
+        case .none: return ""
         }
     }
 }
