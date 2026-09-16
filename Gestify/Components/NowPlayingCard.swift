@@ -52,6 +52,3 @@ struct NowPlayingCard: View {
     }
 }
 
-#Preview {
-    ZStack { Theme.backgroundGradient.ignoresSafeArea(); NowPlayingCard(title: "Combi", artist: "Joucyplug").padding() }
-}

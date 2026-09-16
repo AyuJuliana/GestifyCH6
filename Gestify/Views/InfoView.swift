@@ -11,9 +11,6 @@ import TipKit
 struct TutorialView: View {
     @EnvironmentObject private var settings: AppSettings
     @Environment(\.dismiss) private var dismiss
-
-    @State private var selectedHand: DominantHand = .right
-    @State private var soundFeedback: Bool = true
     @State private var sensitivity: Double = 0.7
     @State private var showAdvancedTip: Bool = false
 
@@ -24,8 +21,6 @@ struct TutorialView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
                     header
-                    card { handSelectionSection }
-                    card { soundToggleSection }
                     card { sensitivitySliderSection }
 
                     Text("Available gestures")
@@ -43,7 +38,7 @@ struct TutorialView: View {
             }
             .scrollContentBackground(.hidden)
             .background(Theme.backgroundGradient.ignoresSafeArea())
-            .navigationTitle("Tutorial")
+            .navigationTitle("Info")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbar {
@@ -54,8 +49,6 @@ struct TutorialView: View {
         }
         .preferredColorScheme(.dark)
         .onAppear {
-            selectedHand = settings.dominantHand
-            soundFeedback = settings.soundFeedbackEnabled
             sensitivity = settings.gestureSensitivity
         }
         .task { try? Tips.configure() }
@@ -70,37 +63,11 @@ struct TutorialView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("How Gestify works")
+            Text("Gestify Info")
                 .font(.title2.weight(.bold)).foregroundStyle(.white)
             Text("Review the gestures and adjust your preferences anytime.")
                 .font(.subheadline).foregroundStyle(.white.opacity(0.6))
         }
-    }
-
-    private var handSelectionSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Dominant hand").font(.subheadline.weight(.medium)).foregroundStyle(.white)
-            Picker("Dominant hand", selection: $selectedHand) {
-                ForEach(DominantHand.allCases) { hand in Text(hand.label).tag(hand) }
-            }
-            .pickerStyle(.segmented)
-
-            Text(selectedHand == .left
-                 ? "Position your left hand in front of the camera. Some gestures (☝️, ✌️) can feel slightly mirrored, that's expected."
-                 : "Position your right hand in front of the camera for the best detection results.")
-                .font(.caption).foregroundStyle(.white.opacity(0.55))
-        }
-    }
-
-    private var soundToggleSection: some View {
-        Toggle(isOn: $soundFeedback) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Sound feedback").font(.subheadline.weight(.medium)).foregroundStyle(.white)
-                Text("A short click plays each time a gesture is recognized.")
-                    .font(.caption).foregroundStyle(.white.opacity(0.55))
-            }
-        }
-        .tint(.purple)
     }
 
     private var sensitivitySliderSection: some View {
@@ -130,8 +97,6 @@ struct TutorialView: View {
     }
 
     private func saveAndClose() {
-        settings.dominantHand = selectedHand
-        settings.soundFeedbackEnabled = soundFeedback
         settings.gestureSensitivity = sensitivity
         settings.hasSeenTutorial = true
         dismiss()

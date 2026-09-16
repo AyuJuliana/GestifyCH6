@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 struct ContentView: View {
     @EnvironmentObject private var settings: AppSettings
@@ -13,6 +14,14 @@ struct ContentView: View {
         camera: CameraManager(), music: MusicController(), detector: GestureDetector()
     )
     @State private var showTutorial = false
+    @State private var showOnboarding = true
+
+    // Tips shown one at a time, in order, so they never stack up
+    private let sectionTips = TipGroup(.ordered) {
+        NowPlayingTip()
+        CameraFlipTip()
+        GesturePredictionTip()
+    }
 
     private var isDetecting: Bool { viewModel.currentGesture != .none }
 
@@ -22,31 +31,49 @@ struct ContentView: View {
 
             VStack(spacing: 18) {
                 topBar
+
                 NowPlayingCard(title: viewModel.music.nowPlayingTitle, artist: viewModel.music.nowPlayingArtist)
-                    .padding(.horizontal)
+//                    .padding(.horizontal)
+                    .popoverTip(sectionTips.currentTip as? NowPlayingTip, attachmentAnchor: .point(.center), arrowEdge: .top)
+
                 cameraFrame
                     .padding(.horizontal)
+
                 GestureFeedbackCard(currentGesture: viewModel.currentGesture, lastConfirmedGesture: viewModel.lastConfirmedGesture)
                     .padding(.horizontal)
+                    .popoverTip(sectionTips.currentTip as? GesturePredictionTip, arrowEdge: .top)
+
                 Spacer()
             }
             .padding(.top, 8)
         }
+        .tipViewStyle(GesturePopoverTipStyle())
+        .fullScreenCover(isPresented: $showOnboarding) {
+            OnboardingView {
+                settings.hasSeenOnboarding = true
+                showOnboarding = false
+            }
+        }
         .sheet(isPresented: $showTutorial) { TutorialView() }
-        .alert("Izin Kamera Dibutuhkan", isPresented: $viewModel.cameraPermissionDenied) {
-            Button("Buka Settings") {
+        .alert("Camera Access Needed", isPresented: $viewModel.cameraPermissionDenied) {
+            Button("Open Settings") {
                 if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
             }
-            Button("Batal", role: .cancel) { }
+            Button("Cancel", role: .cancel) { }
         } message: {
-            Text("Gestify butuh akses kamera untuk mendeteksi gesture tanganmu.")
+            Text("Gestify needs camera access to detect your hand gestures.")
         }
         .task {
             viewModel.applySensitivity(settings.gestureSensitivity)
             await viewModel.requestMusicAuthorization()
             viewModel.start()
             UIApplication.shared.isIdleTimerDisabled = true
-            if !settings.hasSeenTutorial { showTutorial = true }
+
+            if !settings.hasSeenOnboarding {
+                showOnboarding = true
+            } else if !settings.hasSeenTutorial {
+                showTutorial = true
+            }
         }
         .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
     }
@@ -65,7 +92,8 @@ struct ContentView: View {
                         .padding(10)
                         .background(.ultraThinMaterial, in: Circle())
                 }
-                .padding(12)
+//                .padding(12)
+                .popoverTip(sectionTips.currentTip as? CameraFlipTip, arrowEdge: .top)
             }
             .overlay(
                 RoundedRectangle(cornerRadius: Theme.cornerRadius)
@@ -91,7 +119,6 @@ struct ContentView: View {
         .padding(.horizontal)
     }
 }
-
 
 #Preview {
     ContentView()

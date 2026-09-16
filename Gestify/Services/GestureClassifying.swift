@@ -41,6 +41,7 @@ final class GestureCoreMLClassifier: GestureClassifying {
         }
     }
 
+    
     func classify(_ pixelBuffer: CVPixelBuffer, orientation: CGImagePropertyOrientation) -> (label: HandGesture, confidence: Double)? {
         // check the hand
         guard let handBox = detectHandBoundingBox(pixelBuffer, orientation: orientation) else {
@@ -67,7 +68,7 @@ final class GestureCoreMLClassifier: GestureClassifying {
         return (HandGesture(rawValue: label) ?? .none, confidence)
     }
     
-    ////Hand bounding box to check for the presence of a hand, if there is no hand at all in the frame, the face and background are automatically ignored here.
+    //Hand bounding box to check for the presence of a hand, if there is no hand at all in the frame, the face and background are automatically ignored here.
     private func detectHandBoundingBox(_ pixelBuffer: CVPixelBuffer, orientation: CGImagePropertyOrientation) -> CGRect? {
         let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: orientation, options: [:])
         try? handler.perform([handLocatorRequest])

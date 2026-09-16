@@ -21,10 +21,47 @@ struct GestureTipStyle: TipViewStyle {
                 configuration.title?.font(.subheadline.weight(.semibold)).foregroundStyle(.white)
                 configuration.message?.font(.caption).foregroundStyle(.white.opacity(0.7))
             }
-            Spacer()
-                .padding(14)
-                .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 16))
-                .overlay(RoundedRectangle(cornerRadius: 16).stroke(.white.opacity(0.08), lineWidth: 1))
+            Spacer(minLength: 0)
         }
+        .padding(14)
+        .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 16))
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(.white.opacity(0.08), lineWidth: 1))
     }
+}
+
+#Preview {
+    HStack(alignment: .top, spacing: 14) {
+        ZStack {
+            Circle()
+                .fill(Theme.accentGradient.opacity(0.85))
+                .frame(width: 44, height: 44)
+
+            Image(systemName: "hand.wave.fill")
+                .foregroundStyle(.white)
+                .font(.system(size: 18, weight: .semibold))
+        }
+
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Gesture Controls")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.white)
+
+            Text("Use hand gestures to control your music.")
+                .font(.caption)
+                .foregroundStyle(.white.opacity(0.7))
+        }
+
+        Spacer(minLength: 0)
+    }
+    .padding(14)
+    .background(
+        .white.opacity(0.06),
+        in: RoundedRectangle(cornerRadius: 16)
+    )
+    .overlay(
+        RoundedRectangle(cornerRadius: 16)
+            .stroke(.white.opacity(0.08), lineWidth: 1)
+    )
+    .padding()
+    .background(.black)
 }

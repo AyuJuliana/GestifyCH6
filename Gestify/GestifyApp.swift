@@ -13,6 +13,7 @@ struct GestifyApp: App {
     @StateObject private var settings = AppSettings()
 
     init() {
+        try? Tips.resetDatastore() 
         try? Tips.configure([
             .displayFrequency(.immediate),
             .datastoreLocation(.applicationDefault)
