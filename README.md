@@ -2,7 +2,7 @@
 
 Gestify is an AI-powered iOS application that allows users to control music playback using hand gestures. Instead of interacting with buttons on the screen, users can perform simple hand gestures in front of the camera to play, pause, skip, or return to songs.
 
-The application combines Computer Vision, Machine Learning, and Apple's native frameworks to create a more natural and hands-free music control experience.
+The application combines Machine Learning, and Apple's native frameworks to create a more natural and hands-free music control experience.
 
 ---
 
