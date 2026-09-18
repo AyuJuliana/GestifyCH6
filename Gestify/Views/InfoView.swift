@@ -11,7 +11,7 @@ import TipKit
 struct TutorialView: View {
     @EnvironmentObject private var settings: AppSettings
     @Environment(\.dismiss) private var dismiss
-    @State private var sensitivity: Double = 0.7
+//    @State private var sensitivity: Double = 0.7
     @State private var showAdvancedTip: Bool = false
 
     private let advancedTip = AdvancedSensitivityTip()
@@ -21,7 +21,7 @@ struct TutorialView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
                     header
-                    card { sensitivitySliderSection }
+//                    card { sensitivitySliderSection }
 
                     Text("Available gestures")
                         .font(.subheadline.weight(.semibold))
@@ -49,7 +49,7 @@ struct TutorialView: View {
         }
         .preferredColorScheme(.dark)
         .onAppear {
-            sensitivity = settings.gestureSensitivity
+//            sensitivity = settings.gestureSensitivity
         }
         .task { try? Tips.configure() }
     }
@@ -62,7 +62,7 @@ struct TutorialView: View {
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 10) {
             Text("Gestify Info")
                 .font(.title2.weight(.bold)).foregroundStyle(.white)
             Text("Review the gestures and adjust your preferences anytime.")
@@ -70,23 +70,23 @@ struct TutorialView: View {
         }
     }
 
-    private var sensitivitySliderSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Gesture sensitivity").font(.subheadline.weight(.medium)).foregroundStyle(.white)
-                Spacer()
-                Text("\(Int(sensitivity * 100))%").font(.caption).foregroundStyle(.white.opacity(0.6))
-            }
-            Slider(value: $sensitivity, in: 0.5...0.95, step: 0.05)
-                .tint(.purple)
-                .onChange(of: sensitivity) { _, newValue in
-                    if newValue < 0.6 { showAdvancedTip = true }
-                }
-            if showAdvancedTip {
-                TipView(advancedTip).tipViewStyle(GestureTipStyle())
-            }
-        }
-    }
+//    private var sensitivitySliderSection: some View {
+//        VStack(alignment: .leading, spacing: 8) {
+//            HStack {
+//                Text("Gesture sensitivity").font(.subheadline.weight(.medium)).foregroundStyle(.white)
+//                Spacer()
+//                Text("\(Int(sensitivity * 100))%").font(.caption).foregroundStyle(.white.opacity(0.6))
+//            }
+//            Slider(value: $sensitivity, in: 0.5...0.95, step: 0.05)
+//                .tint(.purple)
+//                .onChange(of: sensitivity) { _, newValue in
+//                    if newValue < 0.6 { showAdvancedTip = true }
+//                }
+//            if showAdvancedTip {
+//                TipView(advancedTip).tipViewStyle(GestureTipStyle())
+//            }
+//        }
+//    }
 
     private var doneButton: some View {
         Button { saveAndClose() } label: {
@@ -97,7 +97,7 @@ struct TutorialView: View {
     }
 
     private func saveAndClose() {
-        settings.gestureSensitivity = sensitivity
+//        settings.gestureSensitivity = sensitivity
         settings.hasSeenTutorial = true
         dismiss()
     }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OnboardingPage: Identifiable {
-    let id = UUID()
+    var id: String { title }
     let icon: String
     let title: String
     let message: String
@@ -19,11 +19,11 @@ struct OnboardingView: View {
 
     @State private var currentPage = 0
 
-    private let pages: [OnboardingPage] = [
+    private static let pages: [OnboardingPage] = [
         OnboardingPage(
             icon: "hand.wave.fill",
             title: "Welcome to Gestify",
-            message: "Control the music you're playing with just a wave of your hand — no need to touch the screen."
+            message: "Control the music you're playing with just a wave of your hand, no need to touch the screen."
         ),
         OnboardingPage(
             icon: "camera.viewfinder",
@@ -33,9 +33,11 @@ struct OnboardingView: View {
         OnboardingPage(
             icon: "hand.raised.fill",
             title: "One gesture, one command",
-            message: "Open palm to play, fist to pause, and more to skip tracks. Detection results show up instantly on screen."
+            message: "Open palm to play, fist to pause, rock to next, and call to previous. Detection results show up instantly on screen."
         )
     ]
+
+    private var pages: [OnboardingPage] { Self.pages }
 
     var body: some View {
         ZStack {
@@ -50,7 +52,6 @@ struct OnboardingView: View {
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                .animation(.easeInOut, value: currentPage)
 
                 pageIndicator
                     .padding(.bottom, 28)
@@ -67,12 +68,12 @@ struct OnboardingView: View {
         HStack {
             Spacer()
             Button("Skip", action: finish)
+                .buttonStyle(.plain)
                 .font(.subheadline.weight(.medium))
                 .foregroundStyle(.white.opacity(0.4))
                 .padding(.top, 12)
                 .padding(.trailing, 20)
         }
-        .buttonStyle(.glass)
     }
 
     private func pageView(_ page: OnboardingPage) -> some View {
@@ -81,15 +82,20 @@ struct OnboardingView: View {
 
             ZStack {
                 Circle()
-                    .fill(Theme.accentGradient.opacity(0.18))
+                    .fill(Theme.accentGradient)
+                    .opacity(0.18)
                     .frame(width: 160, height: 160)
+
                 Circle()
                     .fill(Theme.accentGradient)
                     .frame(width: 104, height: 104)
+
                 Image(systemName: page.icon)
                     .font(.system(size: 42, weight: .semibold))
                     .foregroundStyle(.white)
             }
+
+            .id(page.id)
 
             VStack(spacing: 10) {
                 Text(page.title)
@@ -102,6 +108,7 @@ struct OnboardingView: View {
                     .foregroundStyle(.white.opacity(0.6))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 36)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Spacer()
@@ -113,17 +120,19 @@ struct OnboardingView: View {
         HStack(spacing: 8) {
             ForEach(pages.indices, id: \.self) { index in
                 Capsule()
-                    .fill(index == currentPage ? AnyShapeStyle(Theme.accentGradient) : AnyShapeStyle(Color.white.opacity(0.2)))
+                    .fill(Theme.accentGradient)
+                    .opacity(index == currentPage ? 1 : 0.22)
                     .frame(width: index == currentPage ? 20 : 6, height: 6)
-                    .animation(.easeInOut(duration: 0.25), value: currentPage)
             }
         }
+        // Animasi dipasang sekali di container, bukan di tiap Capsule.
+        .animation(.easeInOut(duration: 0.25), value: currentPage)
     }
 
     private var continueButton: some View {
         Button {
             if currentPage < pages.count - 1 {
-                withAnimation { currentPage += 1 }
+                currentPage += 1
             } else {
                 finish()
             }
@@ -132,7 +141,9 @@ struct OnboardingView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
                 .fontWeight(.semibold)
+                .contentTransition(.identity)
         }
+        .buttonStyle(.plain)
         .background(Theme.accentGradient, in: RoundedRectangle(cornerRadius: 16))
         .foregroundStyle(.white)
     }

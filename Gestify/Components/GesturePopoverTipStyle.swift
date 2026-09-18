@@ -42,7 +42,7 @@ struct GesturePopoverTipStyle: TipViewStyle {
                         .font(.system(size: 10, weight: .bold))
                         .foregroundStyle(.white.opacity(0.6))
                         .padding(6)
-                        .background(.white.opacity(0.08), in: Circle())   
+                        .background(.white.opacity(0.08), in: Circle())
                 }
                 .buttonStyle(.plain)
             }
@@ -61,7 +61,7 @@ struct GesturePopoverTipStyle: TipViewStyle {
             }
         }
         .padding(14)
-        .background(Color(red: 0.09, green: 0.07, blue: 0.15), in: RoundedRectangle(cornerRadius: 16))
+//        .background(Color(red: 0.09, green: 0.07, blue: 0.15), in: RoundedRectangle(cornerRadius: 16))
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(Theme.cardStroke, lineWidth: 1))
         .presentationBackground(.clear)
         .presentationCompactAdaptation(.none)
